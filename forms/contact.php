@@ -1,30 +1,16 @@
 <?php
-$remitente = $_POST['email'];
-$destinatario = 'evangelinadome@gmail.com'; // en esta línea va el mail del destinatario, puede ser una cuenta de hotmail, yahoo, gmail, etc
-$asunto = 'Consulta'; // acá se puede modificar el asunto del mail
-if (!$_POST){
-?>
+if(!empty($_POST["send"])) {
+	$name = $_POST["userName"];
+	$email = $_POST["userEmail"];
+	$subject = $_POST["subject"];
+	$content = $_POST["content"];
 
-<?php
-}else{
-	 
-    $cuerpo = "Nombre: " . $_POST["nombre"] . "\r \n"; 
-    $cuerpo .= "Apellido: " . $_POST["apellido"] . "\r \n";
-    $cuerpo .= "Email: " . $_POST["email"] . "\r \n";
-	$cuerpo .= "Telefono: " . $_POST["telefono"] . "\r\n";
-	$cuerpo .= "Consulta: " . $_POST["comentarios"] . "\r\n";
-	//las líneas de arriba definen el contenido del mail. Las palabras que están dentro de $_POST[""] deben coincidir con el "name" de cada campo. 
-	// Si se agrega un campo al formulario, hay que agregarlo acá.
-
-    $headers  = "MIME-Version: 1.0\n";
-    $headers .= "Content-type: text/plain; charset=utf-8\n";
-    $headers .= "X-Priority: 3\n";
-    $headers .= "X-MSMail-Priority: Normal\n";
-    $headers .= "X-Mailer: php\n";
-    $headers .= "From: \"".$_POST['nombre']." ".$_POST['apellido']."\" <".$remitente.">\n";
-
-    mail($destinatario, $asunto, $cuerpo, $headers);
-    
-    include 'contacto.html'; //se debe crear un html que confirma el envío
+	$toEmail = "sierrahoracioemanuel@gmail.com";
+	$mailHeaders = "From: " . $name . "<". $email .">\r\n";
+	if(mail($toEmail, $subject, $content, $mailHeaders)) {
+	    $message = "Your contact information is received successfully.";
+	    $type = "success";
+	}
 }
+require_once "contact-view.php";
 ?>
